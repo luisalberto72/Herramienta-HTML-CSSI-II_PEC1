@@ -1,0 +1,11 @@
+
+// Mixin para texto responsive
+@mixin responsive-text($size) {
+  font-size: em($size); // Usar la función em para establecer el tamaño base
+
+}
+
+// Mixin para agregar sombra
+@mixin box-shadow($color, $blur, $spread) {
+  box-shadow: 0 0 $blur $spread $color;
+}

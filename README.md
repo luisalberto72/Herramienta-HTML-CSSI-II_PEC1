@@ -66,3 +66,47 @@ Always run the following commands during the development stage and for productio
 Feel free to create a [new issue](https://github.com/uoc-advanced-html-css/uoc-boilerplate/issues/new/) or drop me a line at jorditarrida@uoc.edu.
 
 Are you using this Boilerplate for your projects or for educational purposes? I would love to hear about it!
+
+## Estilos CSS: BEM y OOCSS
+En este proyecto se ha utilizado una combinación de las metodologías BEM y OOCSS para garantizar un código CSS organizado, modular y fácil de mantener.
+
+BEM (Block Element Modifier)
+La metodología BEM se ha aplicado en el nombramiento de clases CSS, asegurando una estructura clara y jerárquica en los componentes:
+
+Bloques: Representan componentes independientes, como .header, .footer, .carousel.
+
+Elementos: Son partes internas de los bloques, como .header__nav, .footer__legal-link.
+
+Modificadores: Permiten alterar el estilo de bloques o elementos, como .header__nav-item--active, que modifica el estilo de un elemento activo.
+
+
+.header {
+  &__nav {
+    display: flex;
+    justify-content: space-between;
+    &-item {
+      margin-right: 2rem;
+    }
+    &-item--active {
+      font-weight: bold;
+      color: $accentColor;
+    }
+  }
+}
+
+
+## OOCSS (Object-Oriented CSS)
+OOCSS se ha implementado para fomentar la reutilización de componentes y la separación de estructura y estilo visual. En este proyecto, se crean objetos CSS que encapsulan la estructura básica y pueden ser modificados con clases adicionales para cambiar su apariencia.
+
+.card {
+    background-color: $white;
+    border-radius: $borderRadius;
+    box-shadow: $boxShadow;
+    overflow: hidden;
+
+    &__body {
+      padding: 1rem;
+    }
+  }
+
+Estas prácticas aseguran que el CSS sea modular, reutilizable y fácil de escalar a medida que el proyecto crece.

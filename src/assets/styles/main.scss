@@ -1,30 +1,419 @@
-/**
- * Use this file to import partials.
- * Do not include SCSS code in this file.
- */
+@use 'variables' as *;
+@use 'mixins';
+@use 'functions';
+@use 'sass:color'; // Importar el módulo de color
 
-/**
- * Import variables
- */
 
-@import "variables";
+@import "npm:@fortawesome/fontawesome-free/css/all.css";
 
-/**
- * Import npm dependencies
- * see: https://v2.parceljs.org/features/module-resolution/
- * see commented examples below
- */
+// Estilos generales del body
+.body {
+  font-family: $fontFamilySansSerif;
+  margin: 0;
+  padding: 0;
+  background-color: $backgroundColor;
+}
 
-// @import "some-node-module";
-// @import "@some-company/some-node-module";
+// Estilos del header
+.header {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  min-height: 10vh;
+  padding: 1rem 0;
+  background-color: $white; // Asegúrate de que $white esté definido
+  box-shadow: $boxShadow; // Asegúrate de que $boxShadow esté definido
 
-/**
- * Import layouts
- * It's a best practice to use a different partial for each page
- */
+  &__top {
+    display: flex;
+    flex-direction: row; // Cambiar a fila para pantallas grandes
+    justify-content: space-between; // Espacio entre el logo y el menú
+    align-items: center; // Alinear verticalmente los elementos
+    text-align: left;
 
-@import "layouts/home";
+    @media (max-width: 768px) {
+      flex-direction: column; // Cambiar a columna para móviles
+      align-items: flex-start; // Alinear a la izquierda en móviles
+    }
+  }
 
-/**
- * Do NOT include anything else in this file!
- */
+  &__logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+
+    @media (max-width: 768px) {
+      justify-content: center; // Centrar el logo en móviles
+      margin-bottom: 1rem; // Más espacio en móviles
+    }
+  }
+
+  &__hamburger {
+    display: none; // Oculto por defecto en pantallas grandes
+    cursor: pointer;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem; // Espacio inferior opcional
+
+    span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background-color: $black; // Asegúrate de que $black esté definido
+      margin: 5px 0;
+    }
+  }
+
+  &__nav {
+    display: flex; // Mostrar en pantallas grandes
+    justify-content: flex-end; // Alinear el menú a la derecha
+    align-items: center; // Alinear verticalmente
+
+    &-list {
+      display: flex; // Mostrar en fila
+      justify-content: center;
+      list-style-type: none; // Eliminar viñetas
+      padding: 0; // Eliminar padding
+      margin: 0; // Eliminar margin
+    }
+
+    &-item {
+      margin: 0 1.5rem; // Espacio horizontal entre elementos
+      
+      &--active {
+        font-weight: bold;
+        color: $accentColor; // Cambia el color para destacar el elemento activo
+      }
+
+    }
+
+    &-link{
+      text-decoration: none ;
+    }
+
+    &-link:hover{
+      color:$accentColor;
+    }
+  }
+
+  @media (max-width: 768px) {
+    &__hamburger {
+      display: block; // Mostrar en pantallas pequeñas
+      margin-right: auto; // Alinear el botón hamburguesa a la izquierda
+    }
+
+    &__nav {
+      display: none; // Ocultar menú por defecto
+
+      &--open {
+        display: block; // Mostrar menú cuando se activa la hamburguesa
+        position: absolute; // Posicionar menú sobre el contenido
+        margin-top: 100px; // Ajustar la posición
+        top: 10vh; // Ajustar a la parte inferior del header
+        left: 0; // Alinear a la izquierda
+        width: 100%; // Ocupa todo el ancho
+        background-color: rgb(255 255 255 / 95%); // Fondo blanco semitransparente para el menú
+        padding: 1rem 0; // Espaciado
+        box-shadow: $boxShadow; // Sombra para el menú
+        z-index: 2; // Asegurarse de que el menú esté encima
+
+      
+      }
+
+      &-link-list{
+        display: flex; // Mostrar en fila
+        flex-direction: column; // Cambiar a columna en móviles
+        align-items: flex-start; // Alinear a la izquierda
+        width: 100%; // Asegurar que el menú use el ancho completo
+      }
+
+      &-item{
+        margin: 0.5rem 0; // Espacio entre elementos en móviles
+        width: 100%; // Ocupar todo el ancho
+      
+      }
+
+    }
+  }
+  
+}
+
+// Estilos de las tarjetas
+.text-intro {
+  flex: 2;
+  padding-right: 20px;
+}
+
+.card-content {
+  display: flex;
+  align-items: flex-start;
+
+  // Para móviles, cambia la disposición a columna
+  @media (max-width: 768px) {
+    flex-direction: column; // Apila el contenido
+    align-items: center; // Centra el contenido en la columna
+  }
+}
+
+.card-image {
+  flex: 1;
+  max-width: 300px;
+
+  @media (max-width: 768px) {
+    max-width: 100%; // Para móviles, permite que la imagen ocupe el ancho completo
+    margin-top: 1rem; // Añade un espacio entre el texto y la imagen
+    text-align: center; // Centra la imagen
+  }
+
+  img {
+    max-width: 100%; // Asegura que la imagen no se desborde
+    height: auto;
+
+    @media (max-width: 768px) {
+      max-width: 80%; // Ajusta el tamaño en móviles (puedes ajustar este valor)
+    }
+  }
+}
+
+// Estilos del carousel (slider)
+.carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  &-inner {
+    display: flex;
+    transition: transform 0.5s ease;
+  }
+
+  &-item {
+    min-width: 100%;
+    box-sizing: border-box;
+    display: flex; // Asegura que el contenido se alinee adecuadamente
+    height: 70vh; // Ajustar la altura del contenedor del carrusel
+
+    img {
+      width: 100%; // Asegura que la imagen ocupe el 100% del ancho de su contenedor
+      height: 100%; // Asegura que la imagen ocupe el 100% del alto de su contenedor
+      object-fit: cover; // Cubre el área manteniendo la proporción
+    }
+  }
+
+  &-control {
+    position: absolute;
+    top: 85%;  // Centramos verticalmente el control
+    transform: translateY(-50%); // Mantiene centrado el control en la altura de la imagen
+    background-color: rgb(255 255 255 / 10%); // Fondo semitransparente
+    border: none;
+    cursor: pointer;
+    z-index: 2;
+    font-size: 2rem; // Tamaño de los controles
+
+  &:hover {
+      background-color: functions.custom-hover-color(#FFA500, 20%); // Cambia a naranja más brillante al hacer hover
+    }
+}
+
+}
+
+.prev{
+  left: 10px; // Control anterior a la izquierda
+}
+
+
+
+.next {
+  right: 10px; // Control siguiente a la derecha
+}
+
+
+// Contenedor principal
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem; // Mayor espacio alrededor del contenido
+}
+
+
+// Columnas en el main
+.column-1 {
+  margin-bottom: 2rem;
+
+}
+
+.column-title {
+  color: $primaryColor;
+  margin-bottom: 1rem;
+
+  @include mixins.responsive-text(24px);
+}
+
+.card {
+    background-color: $white;
+    border-radius: $borderRadius;
+    box-shadow: $boxShadow;
+    overflow: hidden;
+
+    &__body {
+      padding: 1rem;
+    }
+  }
+
+
+// Resaltar texto 
+.highlight {
+  color: $accentColor; // Color del texto
+  font-weight: bold;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  background-color: functions.custom-lighten($accentColor, 40%); // Color de fondo con ajuste de luminosidad
+  padding: 10px;
+  border-left: 5px solid transparent; // Borde izquierdo inicial (transparente)
+  border-radius: $borderRadius; // Bordes redondeados
+
+  @include mixins.box-shadow(rgba(0, 0, 0, 10%), 4px, 10px);
+
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border-left-color 0.3s ease; // Transición suave
+
+  // Al pasar el ratón
+  &:hover {
+    background-color: $accentColor;
+
+    @include mixins.box-shadow(rgba(0, 0, 0, 20%), 6px, 15px);
+
+    color: $white; // Cambiar el color del texto al pasar el ratón
+    border-left-color: red; // Cambiar el color del borde izquierdo a rojo al hacer hover
+  }
+}
+
+
+// Media queries para dispositivos móviles
+@media (max-width: 768px) {
+  .header {
+    padding: 0.5rem;
+  }
+
+  .top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  // Ocultar el menú en móviles por defecto
+  nav ul {
+    flex-direction: column;
+    gap: 0.5rem;
+    display: none; // Ocultar en móviles
+  }
+
+  // Mostrar el menú cuando se active el botón de hamburguesa
+  nav.open ul {
+    display: flex;
+  }
+
+
+  .card-content {
+    flex-direction: column; // Imagen y texto apilados en móviles
+  }
+
+  // Estilo específico para la imagen del carrusel en móviles
+  .carousel {
+    height: 70vh; // Aumentar la altura del carrusel en móviles
+  }
+
+  .carousel-item {
+    height: 70vh; // Mantener la altura del contenedor del carrusel
+  }
+
+  .carousel-item img {
+    height: 100%; // Asegura que la imagen ocupe todo el alto del contenedor
+    object-fit: cover; // Mantiene la proporción y cubre el contenedor
+  }
+
+  .carousel-control {
+    font-size: 1.5rem; // Asegurar que los controles sean visibles
+    top: 85%; // Ajustar la posición de los controles para que estén más abajo
+  }
+}
+
+/**************************************** Footer */
+
+.footer {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  background-color: $accentColor;
+  color: $white;
+  text-align: center;
+
+  &__container {
+    margin-left: 0;
+    list-style-type: none;
+  }
+
+
+  &__legal-list {
+    list-style: none; // Nos aseguramos de que no haya viñetas en pantallas grandes.
+    text-decoration: none;
+  }
+  
+  &__list-item {
+    padding-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  &__social-item {
+    display: inline-block;
+  }
+  
+  &__social-icon:hover {
+    opacity: 70%;
+  }
+
+  &__logo {
+    opacity: 70%;
+  }
+
+
+
+  &__legal-link {
+    text-decoration: none;
+  }
+  
+  &__legal-link:hover{
+    text-decoration: none;
+    color:$white;
+  }
+
+
+  @media (min-width: 992px) {
+    &__flex {
+      display: flex;
+      justify-content: space-between;
+      text-align: left;
+      align-items: center;
+    }
+
+    &__right {
+      text-align: right;
+      margin-right: 50px;
+    }
+
+    &__left {
+      margin-left: 50px;
+    }
+
+    &__social {
+      margin-bottom: 0.5rem;
+    }
+
+    &__legal-item{
+      display: inline-block;
+      padding-bottom: 0; 
+    }
+
+  
+ }
+
+
+}
+ 
+

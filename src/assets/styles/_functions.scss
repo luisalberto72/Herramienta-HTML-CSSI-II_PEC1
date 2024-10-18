@@ -1,0 +1,12 @@
+
+@use "sass:color"; // Importar el módulo de color de Sass
+
+// Función para aclarar el color
+@function custom-lighten($color, $percentage) { // Cambiado a kebab-case
+    @return color.adjust($color, $lightness: $percentage); 
+}
+
+// Función para ajustar el color de un elemento cuando se produce una acción de "hover"
+@function custom-hover-color($color, $percentage) {
+    @return color.adjust($color,$lightness: - $percentage); // Oscurecer el color
+}
